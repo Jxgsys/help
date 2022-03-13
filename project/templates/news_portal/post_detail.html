@@ -1,0 +1,52 @@
+{% extends 'news_portal/base.html' %}
+{% load my_filters %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+    }
+</style>
+        <table>
+            <thead>
+                <th>
+                    Заголовок
+                </th>
+                <th>
+                    Автор
+                </th>
+                <th>
+                    Дата публикации
+                </th>
+                <th>
+                    Категория
+                </th>
+                <th>
+                    Содержание
+                </th>
+            </thead>
+            <tr>
+                <td>
+                    {{ post.title }}
+                </td>
+                <td>
+                    {{ post.author.user }}
+                </td>
+                <td>
+                    {{ post.time_in|date:'d-M-Y H:i' }}
+                </td>
+                <td>
+                    {{ post.category.name }}
+                </td>
+                <td>
+                    {{ post.text|relax }}
+                </td>
+            </tr>
+        </table>
+{% endblock content %}

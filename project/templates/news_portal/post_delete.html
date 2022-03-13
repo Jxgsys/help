@@ -1,0 +1,42 @@
+{% extends 'news_portal/base.html' %}
+{% load my_filters %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить статью?</h2>
+        <table>
+            <thead>
+                <th>
+                    Заголовок
+                </th>
+                <th>
+                    Автор
+                </th>
+                <th>
+                    Дата публикации
+                </th>
+                <th>
+                    Содержание
+                </th>
+            </thead>
+            <tr>
+                <td>
+                    {{ post.title }}
+                </td>
+                <td>
+                    {{ post.author.user }}
+                </td>
+                <td>
+                    {{ post.time_in|date:'d-M-Y H:i' }}
+                </td>
+                <td>
+                    {{ post.text|relax }}
+                </td>
+            </tr>
+        </table>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

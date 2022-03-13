@@ -1,0 +1,73 @@
+{% extends 'news_portal/base.html' %}
+{% load my_filters %}
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+
+<form method="GET">
+    {{ filter.form }} <!-- Форму от фильтров за нас сделает Django. А вот кнопку, увы придётся делать самому -->
+    <input type="submit" value="Найти">
+</form>
+
+
+    <hr>
+        <table>
+            <thead>
+                <th>
+                    Заголовок
+                </th>
+                <th>
+                    Дата публикации
+                </th>
+                <th>
+                    Содержание
+                </th>
+            </thead>
+    {% for pon in filter.qs %}
+    <tr>
+<!--        <td>-->
+<!--            <a href="{% url 'post_detail' pon.id %}">{{ pon.title|title }}</a>-->
+<!--            <a href="{% url 'post_update' pon.id %}"><u>Редактировать</u></a>-->
+<!--            <a href="{% url 'post_delete' pon.id %}"><u> Удалить </u></a>&lt;!&ndash; Для каждого товара будете генерироваться новая строчка, т. е. новый html-код. При этом сам цикл работает точно так же, как и в Python. product — переменная цикла, т. е. наш товар, взятый из общего списка &ndash;&gt;-->
+<!--        </td>-->
+        <td>
+            {{ pon.title }} <!-- не забываем, что переменные в шаблоне ничем не отличаются от переменных в Python. Здесь также можно получать доступ к полям класса. Например, здесь мы выводим имя, в следующем столбце описание и т. д.  -->
+        </td>
+        <td>
+            {{ pon.time_in|date:'d-M-Y' }}
+        </td>
+        <td>
+            {{ pon.text|truncatechars:50|relax }}
+        </td>
+    </tr>
+        {% endfor %}
+        </table>
+
+
+{% if is_paginated %}
+
+    <!-- Если доступна предыдущая страница, то даём ссылку на неё и самую первую страницу -->
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+    {% endif %}
+
+    <!-- Показываем только текущую страницу и ближайшие к ней, чтобы список не тянулся и не захламлял страницу -->
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a>{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">>>></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+{% endif %}
+
+{% endblock content %}
