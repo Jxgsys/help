@@ -39,7 +39,9 @@ News
             {{ pon.time_in|date:'d-M-Y' }}
         </td>
         <td>
-            {{ pon.category.name }}
+            {% for cat in  pon.category.all %}
+                {{ cat }}
+            {%  endfor %}
         </td>
         <td>
             {{ pon.text|truncatechars:50|relax }}

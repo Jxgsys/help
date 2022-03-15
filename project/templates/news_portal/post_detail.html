@@ -15,38 +15,21 @@
 </style>
         <table>
             <thead>
-                <th>
-                    Заголовок
-                </th>
-                <th>
-                    Автор
-                </th>
-                <th>
-                    Дата публикации
-                </th>
-                <th>
-                    Категория
-                </th>
-                <th>
-                    Содержание
-                </th>
+                <th>Заголовок</th>
+                <th>Автор</th>
+                <th>Дата публикации</th>
+                <th>Категория</th>
+                <th>Содержание</th>
             </thead>
             <tr>
-                <td>
-                    {{ post.title }}
+                <td>{{ post.title }}</td>
+                <td>{{ post.author.user }}</td>
+                <td>{{ post.time_in|date:'d-M-Y H:i' }}</td>
+                <td>{% for cat in  post.category.all %}
+                        {{ cat }}
+                {%  endfor %}
                 </td>
-                <td>
-                    {{ post.author.user }}
-                </td>
-                <td>
-                    {{ post.time_in|date:'d-M-Y H:i' }}
-                </td>
-                <td>
-                    {{ post.category.name }}
-                </td>
-                <td>
-                    {{ post.text|relax }}
-                </td>
+                <td>{{ post.text|relax }}</td>
             </tr>
         </table>
 {% endblock content %}
